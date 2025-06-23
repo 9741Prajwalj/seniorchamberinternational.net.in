@@ -191,8 +191,8 @@ p {margin: .75em 0 1.5em; color: #fff;}
         ?>
         <div class="fluid-paragraph fluid-paragraph-xl c-gray-light strong-300" style="padding: 0px !important;">
             <div class="row">
-                <div class="col-lg-6">   
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15546.454067757253!2d77.5040906!3d13.060255!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xc3d4b3dd9f6e26b9!2sSiddhrans%20Technologies!5e0!3m2!1sen!2sin!4v1605856061394!5m2!1sen!2sin" width="100%" height="460" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+                <div class="col-lg-6">
+                  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3913.0127552023823!2d75.77842947409404!3d11.26047165008085!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba65937a96930d7%3A0xa2faa020eff14a92!2sSENIOR%20CHAMBER%20INTERNATIONAL!5e0!3m2!1sen!2sin!4v1750251595002!5m2!1sen!2sin" width="100%" height="460" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
                 </div>
 
                 <div class="col-lg-6">

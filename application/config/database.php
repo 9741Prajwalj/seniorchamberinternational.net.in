@@ -71,7 +71,7 @@ if ($hostname == 'localhost' || $hostname == '127.0.0.1') {
         'hostname' => 'localhost',
         'username' => 'root',
         'password' => '',
-        'database' => '1pc',
+        'database' => 'ztakzvxv_db',
         'dbdriver' => 'mysqli',
         'dbprefix' => '',
         'pconnect' => FALSE,
@@ -90,11 +90,11 @@ if ($hostname == 'localhost' || $hostname == '127.0.0.1') {
 } else {
     // Production environment
     $db['default'] = array(
-        'dsn'   => '',
+         'dsn'   => '',
         'hostname' => 'localhost',
-        'username' => 'u824676608_1percentcharit',
-        'password' => 'Charity@123',
-        'database' => 'u824676608_1percentcharit',
+        'username' => 'root',
+        'password' => '',
+        'database' => 'ztakzvxv_db',
         'dbdriver' => 'mysqli',
         'dbprefix' => '',
         'pconnect' => FALSE,

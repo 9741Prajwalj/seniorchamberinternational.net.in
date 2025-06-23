@@ -13,14 +13,15 @@ class Admin extends CI_Controller
 
 function __construct()
 {
-    parent::__construct();
+	parent::__construct();
+	$this->load->database(); // Ensure database is loaded
 	$this->load->library('session'); // Add this
-    $this->system_name = $this->Crud_model->get_type_name_by_id('general_settings', '1', 'value');
-    $this->system_email = $this->Crud_model->get_type_name_by_id('general_settings', '2', 'value');
-    $this->system_title = $this->Crud_model->get_type_name_by_id('general_settings', '3', 'value');
-    $this->Crud_model->timezone();
-    $this->load->library('spreadsheet');
-    $this->lang->load("member", "kannada");
+	$this->system_name = $this->Crud_model->get_type_name_by_id('general_settings', '1', 'value');
+	$this->system_email = $this->Crud_model->get_type_name_by_id('general_settings', '2', 'value');
+	$this->system_title = $this->Crud_model->get_type_name_by_id('general_settings', '3', 'value');
+	$this->Crud_model->timezone();
+	$this->load->library('spreadsheet');
+	$this->lang->load("member", "kannada");
 }
 
 	public function index()
@@ -3961,9 +3962,9 @@ function stories($para1 = "", $para2 = "", $para3 = "")
             $data = array();
             if (!empty($rows) && is_array($rows)) {
                 foreach ($rows as $row) {
-                    $story_image = $row->activity_photo && file_exists('Uploads/happy_story_image/' . $row->activity_photo) ?
-                        "<img src='" . base_url('Uploads/happy_story_image/' . $row->activity_photo) . "' class='img-sm' height='30' width='30' alt='story image'>" :
-                        "<img src='" . base_url('Uploads/happy_story_image/default_image.jpg') . "' class='img-sm' height='30' width='30' alt='default image'>";
+                    $story_image = $row->activity_photo && file_exists('uploads/happy_story_image/' . $row->activity_photo) ?
+                        "<img src='" . base_url('uploads/happy_story_image/' . $row->activity_photo) . "' class='img-sm' height='30' width='30' alt='story image'>" :
+                        "<img src='" . base_url('uploads/happy_story_image/default_image.jpg') . "' class='img-sm' height='30' width='30' alt='default image'>";
 
                     $role_id = $this->session->userdata('role_id') ?? 0;
                     $national_role_ids = [1, 3, 4, 5, 6];
@@ -4084,14 +4085,14 @@ function stories($para1 = "", $para2 = "", $para3 = "")
             $story = $this->db->get('happy_story')->row();
             log_message('debug', 'Delete story query: ' . $this->db->last_query());
             if ($story) {
-                if ($story->image && file_exists('Uploads/happy_story_image/' . $story->image)) {
-                    unlink('Uploads/happy_story_image/' . $story->image);
+                if ($story->image && file_exists('uploads/happy_story_image/' . $story->image)) {
+                    unlink('uploads/happy_story_image/' . $story->image);
                 }
-                if ($story->activity_photo && file_exists('Uploads/happy_story_image/' . $story->activity_photo)) {
-                    unlink('Uploads/happy_story_image/' . $story->activity_photo);
+                if ($story->activity_photo && file_exists('uploads/happy_story_image/' . $story->activity_photo)) {
+                    unlink('uploads/happy_story_image/' . $story->activity_photo);
                 }
-                if ($story->press_coverage && file_exists('Uploads/happy_story_image/' . $story->press_coverage)) {
-                    unlink('Uploads/happy_story_image/' . $story->press_coverage);
+                if ($story->press_coverage && file_exists('uploads/happy_story_image/' . $story->press_coverage)) {
+                    unlink('uploads/happy_story_image/' . $story->press_coverage);
                 }
                 $video_exist = $this->db->get_where("story_video", array("story_id" => $para2))->result();
                 if ($video_exist) {
@@ -4323,7 +4324,7 @@ function stories($para1 = "", $para2 = "", $para3 = "")
 			return;
 		}
 
-		$upload_path = FCPATH . 'Uploads/happy_story_image/';
+		$upload_path = FCPATH . 'uploads/happy_story_image/';
 		if (!is_dir($upload_path)) {
 			mkdir($upload_path, 0755, true);
 		}
@@ -6179,7 +6180,9 @@ function stories($para1 = "", $para2 = "", $para3 = "")
 			} elseif ($para1 == "do_add") {
 				$data['name'] = $this->input->post('name');
 				$data['amount'] = $this->input->post('amount');
-				
+				$data['start_date'] = $this->input->post('start_date');
+				$data['end_date'] = $this->input->post('end_date');
+
 
 				if (!empty($_POST['exp_int_status'])) {
 					$data['exp_int_status'] = 1;
@@ -6236,6 +6239,8 @@ function stories($para1 = "", $para2 = "", $para3 = "")
 				$plan_id = $this->input->post('plan_id');
 				$data['name'] = $this->input->post('name');
 				$data['amount'] = $this->input->post('amount');
+				$data['start_date'] = $this->input->post('start_date');
+				$data['end_date'] = $this->input->post('end_date');
 			//	$data['express_interest'] = (!empty($this->input->post('express_interest'))?$this->input->post('express_interest'):'');
 			//	$data['direct_messages'] = $this->input->post('direct_messages');
 			//	$data['photo_gallery'] = $this->input->post('photo_gallery');

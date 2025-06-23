@@ -78,6 +78,24 @@
 						</div>
 					</div>
 
+					<!-- Start Date -->
+					<div class="form-group">
+							<label class="col-sm-2 control-label" for="start_date"><b><?php echo translate('start_date')?></b></label>
+							<div class="col-sm-9">
+									<input type="date" class="form-control" name="start_date" id="start_date" required pattern="\d{4}-\d{2}-\d{2}">
+									<small class="text-muted">Only month and day will be used</small>
+							</div>
+					</div>
+
+					<!-- End Date -->
+					<div class="form-group">
+							<label class="col-sm-2 control-label" for="end_date"><b><?php echo translate('end_date')?></b></label>
+							<div class="col-sm-9">
+									<input type="date" class="form-control" name="end_date" id="end_date" required pattern="\d{4}-\d{2}-\d{2}">
+									<small class="text-muted">Only month and day will be used</small>
+							</div>
+					</div>
+
 					<div class="form-group">
 						<label class="col-sm-2 control-label" for="image"><b><?php echo translate('package_image')?></b></label>
 	                    <div class="col-sm-10">
