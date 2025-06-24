@@ -27,7 +27,7 @@ function __construct()
 	public function index()
 	{
 		//error_reporting(1);
-       // ini_set('display_errors',1);
+		//ini_set('display_errors',1);
 		if ($this->admin_permission() == FALSE) {
 			redirect(base_url() . 'admin/login', 'refresh');
 		} else {
@@ -47,38 +47,29 @@ function __construct()
 			$page_data['total_premium_members'] = $this->db->get_where('member', array('membership' => 2))->num_rows();
 			$page_data['total_free_members'] = $this->db->get_where('member', array('membership' => 1))->num_rows();
 			$page_data['total_blocked_members'] = $this->db->get_where('member', array('is_blocked' => 'yes'))->num_rows();
-			$page_data['total_earnings'] = $this->db->select_sum('amount')->get('package_payment')->row()->amount;
-			$page_data['total_paid'] = $this->db->select_sum('amount')->from('package_payment')->where('payment_status', 'paid')->get()->row()->amount;
-			$page_data['total_due'] = $this->db->select_sum('amount')->from('package_payment')->where('payment_status', 'due')->get()->row()->amount;
+			$page_data['total_earnings'] = $this->db->select_sum('amount')->get('package_payment')->row()->amount ?? 0;
+			$page_data['total_paid'] = $this->db->select_sum('amount')->from('package_payment')->where('payment_status', 'paid')->get()->row()->amount ?? 0;
+			$page_data['total_due'] = $this->db->select_sum('amount')->from('package_payment')->where('payment_status', 'due')->get()->row()->amount ?? 0;
 
 			$last_month_timestamp = strtotime(date('d-m-Y h:i:s', strtotime("-1 months")));
-			$last_month = $this->db->select('purchase_datetime')->from('package_payment')->get()->row();
-			$page_data['paid_last_month_earnings'] = $this->db->select_sum('amount')->get_where('package_payment', array('purchase_datetime >=' => $last_month_timestamp, 'payment_status' => 'paid'))->row()->amount;
+			$page_data['paid_last_month_earnings'] = $this->db->select_sum('amount')->get_where('package_payment', array('purchase_datetime >=' => $last_month_timestamp, 'payment_status' => 'paid'))->row()->amount ?? 0;
 
 			$last_3_months_timestamp = strtotime(date('d-m-Y h:i:s', strtotime("-3 months")));
-			$page_data['paid_last_3_months_earnings'] = $this->db->select_sum('amount')->get_where('package_payment', array('purchase_datetime >=' => $last_3_months_timestamp, 'payment_status' => 'paid'))->row()->amount;
+			$page_data['paid_last_3_months_earnings'] = $this->db->select_sum('amount')->get_where('package_payment', array('purchase_datetime >=' => $last_3_months_timestamp, 'payment_status' => 'paid'))->row()->amount ?? 0;
 
 			$half_yearly_timestamp = strtotime(date('d-m-Y h:i:s', strtotime("-6 months")));
-			$page_data['paid_half_yearly_earnings'] = $this->db->select_sum('amount')->get_where('package_payment', array('purchase_datetime >=' => $half_yearly_timestamp, 'payment_status' => 'paid'))->row()->amount;
+			$page_data['paid_half_yearly_earnings'] = $this->db->select_sum('amount')->get_where('package_payment', array('purchase_datetime >=' => $half_yearly_timestamp, 'payment_status' => 'paid'))->row()->amount ?? 0;
 
 			$last_year_timestamp = strtotime(date('d-m-Y h:i:s', strtotime("-12 months")));
-			$page_data['paid_yearly_earnings'] = $this->db->select_sum('amount')->get_where('package_payment', array('purchase_datetime >=' => $last_year_timestamp, 'payment_status' => 'paid'))->row()->amount;
+			$page_data['paid_yearly_earnings'] = $this->db->select_sum('amount')->get_where('package_payment', array('purchase_datetime >=' => $last_year_timestamp, 'payment_status' => 'paid'))->row()->amount ?? 0;
 
-			$l1 = date('Y-m-d H:i:s', $last_month_timestamp);
-			$l2 = date('Y-m-d H:i:s', $last_3_months_timestamp);
-			$l3 = date('Y-m-d H:i:s', $half_yearly_timestamp);
-			$l4 = date('Y-m-d H:i:s', $last_year_timestamp);
-			$last_month_timestamp = strtotime(date('d-m-Y h:i:s', strtotime("-1 months")));
-			$page_data['due_last_month_earnings'] = $this->db->select_sum('amount')->get_where('package_payment', array('purchase_datetime >=' => $last_month_timestamp, 'payment_status' => 'due'))->row()->amount;
+			$page_data['due_last_month_earnings'] = $this->db->select_sum('amount')->get_where('package_payment', array('purchase_datetime >=' => $last_month_timestamp, 'payment_status' => 'due'))->row()->amount ?? 0;
 
-			$last_3_months_timestamp = strtotime(date('d-m-Y h:i:s', strtotime("-3 months")));
-			$page_data['due_last_3_months_earnings'] = $this->db->select_sum('amount')->get_where('package_payment', array('purchase_datetime >=' => $last_3_months_timestamp, 'payment_status' => 'due'))->row()->amount;
+			$page_data['due_last_3_months_earnings'] = $this->db->select_sum('amount')->get_where('package_payment', array('purchase_datetime >=' => $last_3_months_timestamp, 'payment_status' => 'due'))->row()->amount ?? 0;
 
-			$half_yearly_timestamp = strtotime(date('d-m-Y h:i:s', strtotime("-6 months")));
-			$page_data['due_half_yearly_earnings'] = $this->db->select_sum('amount')->get_where('package_payment', array('purchase_datetime >=' => $half_yearly_timestamp, 'payment_status' => 'due'))->row()->amount;
+			$page_data['due_half_yearly_earnings'] = $this->db->select_sum('amount')->get_where('package_payment', array('purchase_datetime >=' => $half_yearly_timestamp, 'payment_status' => 'due'))->row()->amount ?? 0;
 
-			$last_year_timestamp = strtotime(date('d-m-Y h:i:s', strtotime("-12 months")));
-			$page_data['due_yearly_earnings'] = $this->db->select_sum('amount')->get_where('package_payment', array('purchase_datetime >=' => $last_year_timestamp, 'payment_status' => 'due'))->row()->amount;
+			$page_data['due_yearly_earnings'] = $this->db->select_sum('amount')->get_where('package_payment', array('purchase_datetime >=' => $last_year_timestamp, 'payment_status' => 'due'))->row()->amount ?? 0;
 			$page_data['free_member_bride'] = $this->db->get_where('member', array('membership' => 1, 'gender' => '2'))->num_rows();
 			$page_data['approved_free_member_bride'] = $this->db->get_where('member', array('membership' => 1, 'gender' => '2', 'status' => 'approved',))->num_rows();
 			$page_data['pending_free_member_bride'] = $this->db->get_where('member', array('membership' => 1, 'gender' => '2', 'status' => 'pending'))->num_rows();
@@ -4543,6 +4534,8 @@ function stories($para1 = "", $para2 = "", $para3 = "")
 					5 => 'package_name',
 					6 => 'payment_status',
 					7 => 'purchase_datetime',
+					8 => 'start_date',
+					9 => 'end_date',
 				);
 				$limit = $this->input->post('length');
 				$start = $this->input->post('start');
@@ -4598,6 +4591,8 @@ function stories($para1 = "", $para2 = "", $para3 = "")
 						} elseif ($row->payment_status == 'due') {
 							$nestedData['status'] = "<center><span class='badge badge-danger' style='width:60px'>" . translate($row->payment_status) . "</span></center>";
 						}
+						$nestedData['start_date'] = ($row->start_date == 0) ? 0 : date('d/m/y', strtotime($row->start_date));
+						$nestedData['end_date'] = ($row->end_date == 0) ? 0 : date('d/m/y', strtotime($row->end_date));
 						$nestedData['options'] = "<button data-target='#earnings_modal' data-toggle='modal' class='btn btn-primary btn-xs add-tooltip' data-toggle='tooltip' data-placement='top' title='" . translate('view') . " Details' onclick='get_detail($row->package_payment_id)'><i class='fa fa-eye'></i></button><button data-target='#delete_modal' data-toggle='modal' class='btn btn-danger btn-xs add-tooltip' data-toggle='tooltip' data-placement='top' title='" . translate('delete') . "' onclick='delete_earning(" . $row->package_payment_id . ")'><i class='fa fa-trash'></i></button>";
 
 						$data[] = $nestedData;

@@ -78,6 +78,12 @@
 							<th>
 								<?php echo translate('package')?>
 							</th>
+							<!-- <th>
+								<?php echo translate('start_date')?>
+							</th>
+							<th>
+								<?php echo translate('end_date')?>
+							</th> -->
 							<th>
 								<?php echo translate('status')?>
 							</th>
@@ -199,7 +205,7 @@
 		    "type": "POST",
 	     "data":{'<?php echo $this->security->get_csrf_token_name(); ?>' : '<?php echo $this->security->get_csrf_hash(); ?>' }
 	   },
-	  	  "columns": [
+	"columns": [
 		    { "data": "#" },
 		    { "data": "member_name" },
 		    { "data": "date" },
@@ -209,6 +215,18 @@
 		    { "data": "status" },
 		    { "data": "options" },
 	],
+	// "columns": [
+	// 	    { "data": "#" },
+	// 	    { "data": "member_name" },
+	// 	    { "data": "date" },
+	// 	    { "data": "payment_type" },
+	// 	    { "data": "amount" },
+	// 	    { "data": "package" },
+	// 	    { "data": "start_date" },
+	// 	    { "data": "end_date" },
+	// 	    { "data": "status" },
+	// 	    { "data": "options" },
+	// ],
 	"drawCallback": function( settings ) {
 	       $('.add-tooltip').tooltip();
 	 }

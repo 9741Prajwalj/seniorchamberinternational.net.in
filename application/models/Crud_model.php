@@ -1868,28 +1868,53 @@ public function update_story($id, $data)
         return $query->num_rows();
     }
 
-   function allearnings($table,$limit,$start,$col,$dir)
+function allearnings($table,$limit,$start,$col,$dir)
     {
-        $this->db->select(''.$table.'.'.$table.'_id, '.$table.'.payment_type,'.$table.'.payment_status,'.$table.'.payment_details,'.$table.'.amount,'.$table.'.purchase_datetime,'.$table.'.custom_payment_method_name, plan.name AS package_name, member.first_name AS member_first_name, member.last_name AS member_last_name', FALSE);
+        $this->db->select(''.$table.'.'.$table.'_id, '.$table.'.payment_type,'.$table.'.payment_status,'.$table.'.payment_details,'.$table.'.amount,'.$table.'.purchase_datetime,'.$table.'.custom_payment_method_name, plan.name AS package_name, member.first_name AS member_first_name, member.last_name AS member_last_name, IFNULL(plan.start_date, 0) AS start_date, IFNULL(plan.end_date, 0) AS end_date', FALSE);
         $this->db->from($table);
         $this->db->join('plan', 'plan.plan_id = '.$table.'.plan_id', 'left');
         $this->db->join('member', 'member.member_id = '.$table.'.member_id', 'left');
 
-        if(!empty($this->session->userdata('earning_status'))){
-            $state = $this->session->userdata('earning_status');
-            if($state == 'paid' || $state == 'due'){
-                $this->db->where($table.'.payment_status', $state);
-            }
-        }
         $this->db->limit($limit,$start)->order_by($col,$dir);
         $query = $this->db->get();
 
         if($query->num_rows()>0)
         {
-            // echo "<pre>";
-            // print_r($query->result());
-            // exit();
-            return $query->result();
+            $results = $query->result();
+
+            // Iterate over results to update payment_status based on purchase_datetime and start/end dates
+            foreach ($results as &$row) {
+                $purchase_date = $row->purchase_datetime;
+                $start_date = $row->start_date;
+                $end_date = $row->end_date;
+
+                // Convert to timestamps for comparison if not zero
+                $purchase_ts = is_numeric($purchase_date) ? $purchase_date : strtotime($purchase_date);
+                $start_ts = ($start_date && $start_date != 0) ? strtotime($start_date) : 0;
+                $end_ts = ($end_date && $end_date != 0) ? strtotime($end_date) : 0;
+
+                if ($purchase_ts >= $start_ts && $purchase_ts <= $end_ts) {
+                    $row->payment_status = 'paid';
+                } elseif ($purchase_ts > $end_ts) {
+                    $row->payment_status = 'due';
+                }
+                // else keep original payment_status
+            }
+
+            // Filter results based on session earning_status filter
+            $state = $this->session->userdata('earning_status') ?? 'all';
+            if ($state == 'paid') {
+                $results = array_filter($results, function($row) {
+                    return $row->payment_status === 'paid';
+                });
+            } elseif ($state == 'due') {
+                $results = array_filter($results, function($row) {
+                    return $row->payment_status === 'due';
+                });
+            }
+            // If 'all', no filtering
+
+            return array_values($results); // Reindex array after filtering
         }
         else
         {
@@ -1897,9 +1922,9 @@ public function update_story($id, $data)
         }
     }
 
-    function earning_search($table,$limit,$start,$search,$col,$dir)
+function earning_search($table,$limit,$start,$search,$col,$dir)
     {
-        $this->db->select(''.$table.'.'.$table.'_id, '.$table.'.payment_type,'.$table.'.payment_status,'.$table.'.payment_details,'.$table.'.amount,'.$table.'.purchase_datetime,'.$table.'.custom_payment_method_name, plan.name AS package_name, member.first_name AS member_first_name, member.last_name AS member_last_name', FALSE);
+        $this->db->select(''.$table.'.'.$table.'_id, '.$table.'.payment_type,'.$table.'.payment_status,'.$table.'.payment_details,'.$table.'.amount,'.$table.'.purchase_datetime,'.$table.'.custom_payment_method_name, plan.name AS package_name, member.first_name AS member_first_name, member.last_name AS member_last_name, IFNULL(plan.start_date, 0) AS start_date, IFNULL(plan.end_date, 0) AS end_date', FALSE);
 
         $this->db->from($table);
         $this->db->join('plan', 'plan.plan_id = '.$table.'.plan_id', 'left');
