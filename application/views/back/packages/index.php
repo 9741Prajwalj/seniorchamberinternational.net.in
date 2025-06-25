@@ -64,7 +64,7 @@
 											}
 										?>
 										<h3 class="panel-title"><?=$value->name?></h3>
-										<p style="font-size: 25px"><b><?=currency('','def').$value->amount?></b></p>
+										<p style="font-size: 25px"><b><?=currency('','def').$value->total_amount?></b></p>
 										<!--<p><?php echo translate('president:')?> <?=$value->president?> <?php echo translate('times')?></p>-->
 										<!--<p><?php echo translate('vice_president:')?> <?=$value->vice_president?> <?php echo translate('times')?></p>-->
 										<!--<p><?php echo translate('secretary:')?> <?=$value->secretary?> <?php echo translate('images')?></p>-->
@@ -125,9 +125,7 @@
 											}
 										?>
 										<h3 class="panel-title"><?=$value->name?></h3>
-										<p style="font-size: 25px"><b><?=currency('', 'def')?><?=$value->amount?></b></p>
-										
-
+										<p style="font-size: 25px"><b><?=currency('', 'def')?><?=$value->total_amount?></b></p>
 										<!--<?php if($value->exp_int_status == 0) { ?>-->
 										<!--	<p><?php echo translate('president:')?> <?=$value->president?> <?php echo translate('times')?></p>-->
 										<!--<?php } ?>-->

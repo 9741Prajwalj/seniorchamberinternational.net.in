@@ -48,7 +48,15 @@
 							</div>
 						</div>
 					</div>
-
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="gst"><b><?php echo translate('gst')?></b></label>
+						<div class="col-sm-9">
+							<div class="input-group">
+								<input type="text" class="form-control" name="gst" value="<?=$value->gst?>" required="">
+								<div class="input-group-addon">%</div>
+							</div>
+						</div>
+					</div>
 					
 					<div class="form-group">
 						<label class="col-sm-2 control-label" for="president"><b><?php echo translate('president')?></b></label>

@@ -6154,7 +6154,12 @@ function stories($para1 = "", $para2 = "", $para3 = "")
 				$page_data['folder'] = "packages";
 				$page_data['file'] = "index.php";
 				$page_data['bottom'] = "packages/index.php";
-				$page_data['all_plans'] = $this->db->get("plan")->result();
+				$plans = $this->db->get("plan")->result();
+				// Calculate total_amount = amount + gst for each plan
+				foreach ($plans as $plan) {
+					$plan->total_amount = $plan->amount + ($plan->amount * $plan->gst / 100);
+				}
+				$page_data['all_plans'] = $plans;
 				//echo '<pre>';print_r($page_data);exit;
 				if ($this->session->flashdata('alert') == "edit") {
 					$page_data['success_alert'] = translate("you_have_successfully_edited_the_package!");
@@ -6175,6 +6180,7 @@ function stories($para1 = "", $para2 = "", $para3 = "")
 			} elseif ($para1 == "do_add") {
 				$data['name'] = $this->input->post('name');
 				$data['amount'] = $this->input->post('amount');
+				$data['gst'] = $this->input->post('gst');
 				$data['start_date'] = $this->input->post('start_date');
 				$data['end_date'] = $this->input->post('end_date');
 
@@ -6194,6 +6200,8 @@ function stories($para1 = "", $para2 = "", $para3 = "")
 
 				$this->db->insert('plan', $data);
 				$plan_id = $this->db->insert_id();
+
+				log_message('info', 'Package added: plan_id=' . $plan_id . ', data=' . json_encode($data));
 
 				if (!demo()) {
 					if ($_FILES['image']['name'] !== '') {
@@ -6229,11 +6237,12 @@ function stories($para1 = "", $para2 = "", $para3 = "")
 				$page_data['get_plan'] = $this->db->get_where("plan", array("plan_id" => $para2))->result();
 			} elseif ($para1 == "update") {
 			   /* echo '<pre>';print_r($_POST);
-			    echo '<br />';
+			    echo '<br />'; 
 			    echo '<pre>';print_r($_FILES);exit;*/
 				$plan_id = $this->input->post('plan_id');
 				$data['name'] = $this->input->post('name');
 				$data['amount'] = $this->input->post('amount');
+				$data['gst'] = $this->input->post('gst');
 				$data['start_date'] = $this->input->post('start_date');
 				$data['end_date'] = $this->input->post('end_date');
 			//	$data['express_interest'] = (!empty($this->input->post('express_interest'))?$this->input->post('express_interest'):'');
@@ -6270,6 +6279,9 @@ function stories($para1 = "", $para2 = "", $para3 = "")
 				}
 				$this->db->where('plan_id', $plan_id);
 				$result = $this->db->update('plan', $data);
+
+				log_message('info', 'Package updated: plan_id=' . $plan_id . ', data=' . json_encode($data));
+
 				recache();
 				if ($result) {
 					$this->session->set_flashdata('alert', 'edit');
