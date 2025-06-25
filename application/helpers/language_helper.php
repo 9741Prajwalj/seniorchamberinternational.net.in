@@ -281,20 +281,29 @@
 		function translate($word){
 			$CI=& get_instance();
 			$CI->load->database();
-			if($set_lang = $CI->session->userdata('language')){} else {
-				$set_lang = $CI->db->get_where('general_settings',array('type'=>'language'))->row()->value;
+
+			$set_lang = $CI->session->userdata('language');
+			if(empty($set_lang)){
+				$lang_row = $CI->db->get_where('general_settings',array('type'=>'language'))->row();
+				if($lang_row && !empty($lang_row->value)){
+					$set_lang = $lang_row->value;
+				} else {
+					$set_lang = 'english';
+				}
 			}
+
 			$return = '';
 			$result = $CI->db->get_where('site_language',array('word'=>$word));
 			if($result->num_rows() > 0){
-				if($result->row()->$set_lang !== NULL && $result->row()->$set_lang !== ''){
-					$return = $result->row()->$set_lang;
+				$row = $result->row();
+				if(property_exists($row, $set_lang) && $row->$set_lang !== NULL && $row->$set_lang !== ''){
+					$return = $row->$set_lang;
 					$lang = $set_lang;
 				} else {
-					$return = $result->row()->english;
+					$return = $row->english;
 					$lang = 'english';
 				}
-				$id = $result->row()->word_id;
+				$id = $row->word_id;
 			} else {
 				$data['word'] = $word;
 				$data['english'] = ucwords(str_replace('_', ' ', $word));
