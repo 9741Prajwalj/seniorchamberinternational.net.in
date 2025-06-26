@@ -24,6 +24,177 @@ function __construct()
 	$this->lang->load("member", "kannada");
 }
 
+	public function contribution($para1 = "", $para2 = "")
+	{
+		if ($this->admin_permission() == FALSE) {
+			redirect(base_url() . 'admin/login', 'refresh');
+		} else {
+			$page_data['title'] = "Admin || " . $this->system_title;
+			if ($para1 == "") {
+				$page_data['top'] = "packages/index.php";
+				$page_data['folder'] = "contribution";
+				$page_data['file'] = "index.php";
+				$page_data['bottom'] = "packages/index.php";
+				$plans = $this->db->where('contribution', 1)->get("plan")->result();
+				// Calculate total_amount = amount + gst for each plan
+				foreach ($plans as $plan) {
+					$plan->total_amount = $plan->amount + ($plan->amount * $plan->gst / 100);
+				}
+				$page_data['all_plans'] = $plans;
+				if ($this->session->flashdata('alert') == "edit") {
+					$page_data['success_alert'] = translate("you_have_successfully_edited_the_package!");
+				} elseif ($this->session->flashdata('alert') == "add") {
+					$page_data['success_alert'] = translate("you_have_successfully_added_the_package!");
+				} elseif ($this->session->flashdata('alert') == "delete") {
+					$page_data['danger_alert'] = translate("you_have_successfully_deleted_the_package!");
+				} elseif ($this->session->flashdata('alert') == "failed_image") {
+					$page_data['danger_alert'] = translate("failed_to_upload_your_image._make_sure_the_image_is_JPG,_JPEG_or_PNG!");
+				} elseif ($this->session->flashdata('alert') == "demo_msg") {
+					$page_data['danger_alert'] = translate("this_operation_is_disabled_in_demo!");
+				}
+				$page_data['page_name'] = "contribution";
+				$this->load->view('back/index', $page_data);
+			} elseif ($para1 == "add_package") {
+				$page_data['top'] = "packages/packages.php";
+				$page_data['folder'] = "contribution";
+				$page_data['file'] = "add_package.php";
+				$page_data['bottom'] = "packages/packages.php";
+				$page_data['page_name'] = "contribution";
+				$this->load->view('back/index', $page_data);
+			} elseif ($para1 == "do_add") {
+				$this->contribution_do_add();
+			} elseif ($para1 == "edit_package") {
+				$page_data['top'] = "packages/packages.php";
+				$page_data['folder'] = "contribution";
+				$page_data['file'] = "edit_package.php";
+				$page_data['bottom'] = "packages/packages.php";
+				$page_data['get_plan'] = $this->db->get_where("plan", array("plan_id" => $para2))->result();
+				$page_data['page_name'] = "contribution";
+				$this->load->view('back/index', $page_data);
+			} elseif ($para1 == "update") {
+				$this->contribution_update();
+			} elseif ($para1 == "delete") {
+				if (demo()) {
+					$this->session->set_flashdata('alert', 'demo_msg');
+					return false;
+				}
+				$plan_id = $para2;
+				$this->db->where('plan_id', $para2);
+				$result = $this->db->delete('plan');
+				recache();
+				if ($result) {
+					$this->session->set_flashdata('alert', 'delete');
+					redirect(base_url() . 'admin/contribution', 'refresh');
+				} else {
+					echo "Data Failed to Delete!";
+				}
+				exit;
+			}
+		}
+	}
+
+	public function contribution_do_add()
+	{
+		$data['name'] = $this->input->post('name');
+		$data['amount'] = $this->input->post('amount');
+		$data['gst'] = $this->input->post('gst');
+		$data['start_date'] = $this->input->post('start_date');
+		$data['end_date'] = $this->input->post('end_date');
+		$data['contribution'] = 1;
+
+		if (!empty($_POST['exp_int_status'])) {
+			$data['exp_int_status'] = 1;
+		} else {
+			$data['exp_int_status'] = 0;
+		}
+
+		if (!empty($_POST['dir_msg_status'])) {
+			$data['dir_msg_status'] = 1;
+		} else {
+			$data['dir_msg_status'] = 0;
+		}
+
+		$this->db->insert('plan', $data);
+		$plan_id = $this->db->insert_id();
+
+		if (!demo()) {
+			if ($_FILES['image']['name'] !== '') {
+				$id = $plan_id;
+				$path = $_FILES['image']['name'];
+				$ext = '.' . pathinfo($path, PATHINFO_EXTENSION);
+				if ($ext == ".jpg" || $ext == ".JPG" || $ext == ".jpeg" || $ext == ".JPEG" || $ext == ".png" || $ext == ".PNG") {
+					$this->Crud_model->file_up("image", "plan", $id, '', '', $ext);
+					$images[] = array('image' => 'plan_' . $id . $ext, 'thumb' => 'plan_' . $id . '_thumb' . $ext);
+					$data['image'] = json_encode($images);
+				} else {
+					$this->session->set_flashdata('alert', 'failed_image');
+					redirect(base_url() . 'admin/contribution', 'refresh');
+				}
+			}
+		}
+
+		$this->db->where('plan_id', $plan_id);
+		$result = $this->db->update('plan', $data);
+		recache();
+		if ($result) {
+			$this->session->set_flashdata('alert', 'add');
+			redirect(base_url() . 'admin/contribution', 'refresh');
+		} else {
+			echo "Data Failed to Add!";
+		}
+		exit;
+	}
+
+	public function contribution_update()
+	{
+		$plan_id = $this->input->post('plan_id');
+		$data['name'] = $this->input->post('name');
+		$data['amount'] = $this->input->post('amount');
+		$data['gst'] = $this->input->post('gst');
+		$data['start_date'] = $this->input->post('start_date');
+		$data['end_date'] = $this->input->post('end_date');
+		$data['contribution'] = 1;
+
+		if (!empty($_POST['exp_int_status'])) {
+			$data['exp_int_status'] = 1;
+		} else {
+			$data['exp_int_status'] = 0;
+		}
+
+		if (!empty($_POST['dir_msg_status'])) {
+			$data['dir_msg_status'] = 1;
+		} else {
+			$data['dir_msg_status'] = 0;
+		}
+
+		if (!demo()) {
+			if ($_FILES['image']['name'] !== '') {
+				$id = $plan_id;
+				$path = $_FILES['image']['name'];
+				$ext = '.' . pathinfo($path, PATHINFO_EXTENSION);
+				if ($ext == ".jpg" || $ext == ".JPG" || $ext == ".jpeg" || $ext == ".JPEG" || $ext == ".png" || $ext == ".PNG") {
+					$this->Crud_model->file_up("image", "plan", $id, '', '', $ext);
+					$images[] = array('image' => 'plan_' . $id . $ext, 'thumb' => 'plan_' . $id . '_thumb' . $ext);
+					$data['image'] = json_encode($images);
+				} else {
+					$this->session->set_flashdata('alert', 'failed_image');
+					redirect(base_url() . 'admin/contribution', 'refresh');
+				}
+			}
+		}
+
+		$this->db->where('plan_id', $plan_id);
+		$result = $this->db->update('plan', $data);
+		recache();
+		if ($result) {
+			$this->session->set_flashdata('alert', 'edit');
+			redirect(base_url() . 'admin/contribution', 'refresh');
+		} else {
+			echo "Data Failed to Edit!";
+		}
+		exit;
+	}
+
 	public function index()
 	{
 		//error_reporting(1);
@@ -6149,147 +6320,145 @@ function stories($para1 = "", $para2 = "", $para3 = "")
 			redirect(base_url() . 'admin/login', 'refresh');
 		} else {
 			$page_data['title'] = "Admin || " . $this->system_title;
-			if ($para1 == "") {
-				$page_data['top'] = "packages/index.php";
-				$page_data['folder'] = "packages";
-				$page_data['file'] = "index.php";
-				$page_data['bottom'] = "packages/index.php";
-				$plans = $this->db->get("plan")->result();
-				// Calculate total_amount = amount + gst for each plan
-				foreach ($plans as $plan) {
-					$plan->total_amount = $plan->amount + ($plan->amount * $plan->gst / 100);
-				}
-				$page_data['all_plans'] = $plans;
-				//echo '<pre>';print_r($page_data);exit;
-				if ($this->session->flashdata('alert') == "edit") {
-					$page_data['success_alert'] = translate("you_have_successfully_edited_the_package!");
-				} elseif ($this->session->flashdata('alert') == "add") {
-					$page_data['success_alert'] = translate("you_have_successfully_added_the_package!");
-				} elseif ($this->session->flashdata('alert') == "delete") {
-					$page_data['danger_alert'] = translate("you_have_successfully_deleted_the_package!");
-				} elseif ($this->session->flashdata('alert') == "failed_image") {
-					$page_data['danger_alert'] = translate("failed_to_upload_your_image._make_sure_the_image_is_JPG,_JPEG_or_PNG!");
-				} elseif ($this->session->flashdata('alert') == "demo_msg") {
-					$page_data['danger_alert'] = translate("this_operation_is_disabled_in_demo!");
-				}
-			} elseif ($para1 == "add_package") {
-				$page_data['top'] = "packages/packages.php";
-				$page_data['folder'] = "packages";
-				$page_data['file'] = "add_package.php";
-				$page_data['bottom'] = "packages/packages.php";
-			} elseif ($para1 == "do_add") {
-				$data['name'] = $this->input->post('name');
-				$data['amount'] = $this->input->post('amount');
-				$data['gst'] = $this->input->post('gst');
-				$data['start_date'] = $this->input->post('start_date');
-				$data['end_date'] = $this->input->post('end_date');
+if ($para1 == "") {
+	$page_data['top'] = "packages/index.php";
+	$page_data['folder'] = "packages";
+	$page_data['file'] = "index.php";
+	$page_data['bottom'] = "packages/index.php";
+	$plans = $this->db->where('contribution', 0)->get("plan")->result();
+	// Calculate total_amount = amount + gst for each plan
+	foreach ($plans as $plan) {
+		$plan->total_amount = $plan->amount + ($plan->amount * $plan->gst / 100);
+	}
+	$page_data['all_plans'] = $plans;
+	//echo '<pre>';print_r($page_data);exit;
+	if ($this->session->flashdata('alert') == "edit") {
+		$page_data['success_alert'] = translate("you_have_successfully_edited_the_package!");
+	} elseif ($this->session->flashdata('alert') == "add") {
+		$page_data['success_alert'] = translate("you_have_successfully_added_the_package!");
+	} elseif ($this->session->flashdata('alert') == "delete") {
+		$page_data['danger_alert'] = translate("you_have_successfully_deleted_the_package!");
+	} elseif ($this->session->flashdata('alert') == "failed_image") {
+		$page_data['danger_alert'] = translate("failed_to_upload_your_image._make_sure_the_image_is_JPG,_JPEG_or_PNG!");
+	} elseif ($this->session->flashdata('alert') == "demo_msg") {
+		$page_data['danger_alert'] = translate("this_operation_is_disabled_in_demo!");
+	}
+} elseif ($para1 == "add_package") {
+	$page_data['top'] = "packages/packages.php";
+	$page_data['folder'] = "packages";
+	$page_data['file'] = "add_package.php";
+	$page_data['bottom'] = "packages/packages.php";
+} elseif ($para1 == "do_add") {
+	$data['name'] = $this->input->post('name');
+	$data['amount'] = $this->input->post('amount');
+	$data['gst'] = $this->input->post('gst');
+	$data['start_date'] = $this->input->post('start_date');
+	$data['end_date'] = $this->input->post('end_date');
+	$data['contribution'] = 0;
 
+	if (!empty($_POST['exp_int_status'])) {
+		$data['exp_int_status'] = 1;
+	} else {
+		$data['exp_int_status'] = 0;
+	}
 
-				if (!empty($_POST['exp_int_status'])) {
-					$data['exp_int_status'] = 1;
-				} else {
-					$data['exp_int_status'] = 0;
-				}
+	if (!empty($_POST['dir_msg_status'])) {
+		$data['dir_msg_status'] = 1;
+	} else {
+		$data['dir_msg_status'] = 0;
+	}
 
+	$this->db->insert('plan', $data);
+	$plan_id = $this->db->insert_id();
 
-				if (!empty($_POST['dir_msg_status'])) {
-					$data['dir_msg_status'] = 1;
-				} else {
-					$data['dir_msg_status'] = 0;
-				}
+	log_message('info', 'Package added: plan_id=' . $plan_id . ', data=' . json_encode($data));
 
-				$this->db->insert('plan', $data);
-				$plan_id = $this->db->insert_id();
+	if (!demo()) {
+		if ($_FILES['image']['name'] !== '') {
+			$id = $plan_id;
+			$path = $_FILES['image']['name'];
+			$ext = '.' . pathinfo($path, PATHINFO_EXTENSION);
+			if ($ext == ".jpg" || $ext == ".JPG" || $ext == ".jpeg" || $ext == ".JPEG" || $ext == ".png" || $ext == ".PNG") {
+				$this->Crud_model->file_up("image", "plan", $id, '', '', $ext);
+				$images[] = array('image' => 'plan_' . $id . $ext, 'thumb' => 'plan_' . $id . '_thumb' . $ext);
+				$data['image'] = json_encode($images);
+			} else {
+				$this->session->set_flashdata('alert', 'failed_image');
+				redirect(base_url() . 'admin/packages', 'refresh');
+			}
+		}
+	}
 
-				log_message('info', 'Package added: plan_id=' . $plan_id . ', data=' . json_encode($data));
+	$this->db->where('plan_id', $plan_id);
+	$result = $this->db->update('plan', $data);
+	recache();
+	if ($result) {
+		$this->session->set_flashdata('alert', 'add');
+		redirect(base_url() . 'admin/packages', 'refresh');
+	} else {
+		echo "Data Failed to Add!";
+	}
+	exit;
+} elseif ($para1 == "edit_package") {
+	$page_data['top'] = "packages/packages.php";
+	$page_data['folder'] = "packages";
+	$page_data['file'] = "edit_package.php";
+	$page_data['bottom'] = "packages/packages.php";
+	$page_data['get_plan'] = $this->db->get_where("plan", array("plan_id" => $para2))->result();
+} elseif ($para1 == "update") {
+	/* echo '<pre>';print_r($_POST);
+	echo '<br />'; 
+	echo '<pre>';print_r($_FILES);exit;*/
+	$plan_id = $this->input->post('plan_id');
+	$data['name'] = $this->input->post('name');
+	$data['amount'] = $this->input->post('amount');
+	$data['gst'] = $this->input->post('gst');
+	$data['start_date'] = $this->input->post('start_date');
+	$data['end_date'] = $this->input->post('end_date');
+	//	$data['express_interest'] = (!empty($this->input->post('express_interest'))?$this->input->post('express_interest'):'');
+	//	$data['direct_messages'] = $this->input->post('direct_messages');
+	//	$data['photo_gallery'] = $this->input->post('photo_gallery');
 
-				if (!demo()) {
-					if ($_FILES['image']['name'] !== '') {
-						$id = $plan_id;
-						$path = $_FILES['image']['name'];
-						$ext = '.' . pathinfo($path, PATHINFO_EXTENSION);
-						if ($ext == ".jpg" || $ext == ".JPG" || $ext == ".jpeg" || $ext == ".JPEG" || $ext == ".png" || $ext == ".PNG") {
-							$this->Crud_model->file_up("image", "plan", $id, '', '', $ext);
-							$images[] = array('image' => 'plan_' . $id . $ext, 'thumb' => 'plan_' . $id . '_thumb' . $ext);
-							$data['image'] = json_encode($images);
-						} else {
-							$this->session->set_flashdata('alert', 'failed_image');
-							redirect(base_url() . 'admin/packages', 'refresh');
-						}
-					}
-				}
+	if (!empty($_POST['exp_int_status'])) {
+		$data['exp_int_status'] = 1;
+	} else {
+		$data['exp_int_status'] = 0;
+	}
 
-				$this->db->where('plan_id', $plan_id);
-				$result = $this->db->update('plan', $data);
-				recache();
-				if ($result) {
-					$this->session->set_flashdata('alert', 'add');
-					redirect(base_url() . 'admin/packages', 'refresh');
-				} else {
-					echo "Data Failed to Add!";
-				}
-				exit;
-			} elseif ($para1 == "edit_package") {
-				$page_data['top'] = "packages/packages.php";
-				$page_data['folder'] = "packages";
-				$page_data['file'] = "edit_package.php";
-				$page_data['bottom'] = "packages/packages.php";
-				$page_data['get_plan'] = $this->db->get_where("plan", array("plan_id" => $para2))->result();
-			} elseif ($para1 == "update") {
-			   /* echo '<pre>';print_r($_POST);
-			    echo '<br />'; 
-			    echo '<pre>';print_r($_FILES);exit;*/
-				$plan_id = $this->input->post('plan_id');
-				$data['name'] = $this->input->post('name');
-				$data['amount'] = $this->input->post('amount');
-				$data['gst'] = $this->input->post('gst');
-				$data['start_date'] = $this->input->post('start_date');
-				$data['end_date'] = $this->input->post('end_date');
-			//	$data['express_interest'] = (!empty($this->input->post('express_interest'))?$this->input->post('express_interest'):'');
-			//	$data['direct_messages'] = $this->input->post('direct_messages');
-			//	$data['photo_gallery'] = $this->input->post('photo_gallery');
+	if (!empty($_POST['dir_msg_status'])) {
+		$data['dir_msg_status'] = 1;
+	} else {
+		$data['dir_msg_status'] = 0;
+	}
 
-				if (!empty($_POST['exp_int_status'])) {
-					$data['exp_int_status'] = 1;
-				} else {
-					$data['exp_int_status'] = 0;
-				}
+	if (!demo()) {
+		if ($_FILES['image']['name'] !== '') {
+			$id = $plan_id;
+			$path = $_FILES['image']['name'];
+			$ext = '.' . pathinfo($path, PATHINFO_EXTENSION);
+			if ($ext == ".jpg" || $ext == ".JPG" || $ext == ".jpeg" || $ext == ".JPEG" || $ext == ".png" || $ext == ".PNG") {
+				$this->Crud_model->file_up("image", "plan", $id, '', '', $ext);
+				$images[] = array('image' => 'plan_' . $id . $ext, 'thumb' => 'plan_' . $id . '_thumb' . $ext);
+				$data['image'] = json_encode($images);
+			} else {
+				$this->session->set_flashdata('alert', 'failed_image');
+				redirect(base_url() . 'admin/packages', 'refresh');
+			}
+		}
+	}
+	$this->db->where('plan_id', $plan_id);
+	$result = $this->db->update('plan', $data);
 
+	log_message('info', 'Package updated: plan_id=' . $plan_id . ', data=' . json_encode($data));
 
-				if (!empty($_POST['dir_msg_status'])) {
-					$data['dir_msg_status'] = 1;
-				} else {
-					$data['dir_msg_status'] = 0;
-				}
-
-				if (!demo()) {
-					if ($_FILES['image']['name'] !== '') {
-						$id = $plan_id;
-						$path = $_FILES['image']['name'];
-						$ext = '.' . pathinfo($path, PATHINFO_EXTENSION);
-						if ($ext == ".jpg" || $ext == ".JPG" || $ext == ".jpeg" || $ext == ".JPEG" || $ext == ".png" || $ext == ".PNG") {
-							$this->Crud_model->file_up("image", "plan", $id, '', '', $ext);
-							$images[] = array('image' => 'plan_' . $id . $ext, 'thumb' => 'plan_' . $id . '_thumb' . $ext);
-							$data['image'] = json_encode($images);
-						} else {
-							$this->session->set_flashdata('alert', 'failed_image');
-							redirect(base_url() . 'admin/packages', 'refresh');
-						}
-					}
-				}
-				$this->db->where('plan_id', $plan_id);
-				$result = $this->db->update('plan', $data);
-
-				log_message('info', 'Package updated: plan_id=' . $plan_id . ', data=' . json_encode($data));
-
-				recache();
-				if ($result) {
-					$this->session->set_flashdata('alert', 'edit');
-					redirect(base_url() . 'admin/packages', 'refresh');
-				} else {
-					echo "Data Failed to Edit!";
-				}
-				exit;
+	recache();
+	if ($result) {
+		$this->session->set_flashdata('alert', 'edit');
+		redirect(base_url() . 'admin/packages', 'refresh');
+	} else {
+		echo "Data Failed to Edit!";
+	}
+	exit;
 			} elseif ($para1 == "delete") {
 				if (demo()) {
 					$this->session->set_flashdata('alert', 'demo_msg');

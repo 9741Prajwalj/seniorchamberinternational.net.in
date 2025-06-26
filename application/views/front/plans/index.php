@@ -95,7 +95,7 @@
                             </div>
                         <?php endif; ?>
 
-                                    <h3 class="price-tag" style="font-size: 26px;"><?= currency($value->amount) ?></h3>
+                                    <p style="font-size: 25px"><b><?=currency('','def').$value->amount?></b></p>
 
                                                 <div class="py-2 text-center mb-2">
                 <?php
@@ -134,6 +134,7 @@
                     </div>
                 <?php endif; ?>
             <?php endforeach; ?>
+
 
         </div>
     </div>
