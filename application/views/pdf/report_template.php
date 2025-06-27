@@ -21,14 +21,14 @@
             }
 
             .title-page .report-title {
-    margin-top: 60px;    
-}
+                margin-top: 60px;    
+            }
 
-.report-logo {
-    max-width: 650px; /* increased from 150px */
-    height: auto;
-    margin-bottom: 10px;
-}
+            .report-logo {
+                max-width: 650px; /* increased from 150px */
+                height: auto;
+                margin-bottom: 10px;
+            }
 
 
             .company-logo {
@@ -37,10 +37,10 @@
             }
 
             .report-heading { 
-                margin-top 10px;
-                padding-top:5px;
+                margin-top: 20px;
+                padding-top: 10px;
                 text-align: center;
-                margin-bottom: 5px;
+                margin-bottom: 15px;
                 color: #10A182;
                 font-size: 24px;
                 padding: 0 15mm;
@@ -56,17 +56,16 @@
             table {
                 width: 100%;
                 border-collapse: collapse;
-                margin: 15px;
-                table-layout: fixed;
+                margin: 0 15px 15px 15px;
+                /* table-layout: fixed; */
+                word-wrap: break-word;
+                word-break: break-word;
             }
 
             th, td {
                 border: 1px solid #333;
-                padding: 6px;
                 text-align: left;
                 vertical-align: top;
-                word-wrap: break-word;
-                word-break: break-word;
             }
 
             th {
@@ -74,14 +73,58 @@
                 color: white;
             }
 
+            .col-slno {
+                width: 20px !important; /* Strict width enforcement */
+                min-width: 20px; /* Prevent collapsing below 10px */
+                max-width: 20px; /* Prevent expanding beyond 10px */
+                padding: 0 2px !important; /* Minimal padding to reduce space */
+                text-align: center; /* Center the content for better appearance */
+            }
+            .col-date {
+                width: 30px !important;
+                min-width: 30px;
+                max-width: 30px;
+                padding: 8px !important;
+                text-align: left;
+            }
+
+            /* .col-president, .col-area, .col-legion {
+                width: 100px !important;
+                min-width: 100px;
+                max-width: 100px;
+                padding: 8px !important;
+                text-align: left;
+            } */
+             .col-program, .col-program-area {
+                width: 70px !important;
+                min-width: 70px;
+                max-width: 70px;
+                padding: 8px !important;
+                text-align: left;
+            }
+
+            .col-details {
+                width: 100px !important;
+                min-width: 100px;
+                max-width: 100px;
+                padding: 8px !important;
+                text-align: left;
+            }
+
             .detail-table {
                 /* margin: 20px 15mm; */
                 border: 2px solid #10A182;
+                width: 100% !important;
+                table-layout: fixed !important;
+                word-wrap: break-word !important;
+                word-break: break-word !important;
             }
 
             .detail-table th, .detail-table td {
                 border: 1px solid #10A182;
                 padding: 8px;
+                vertical-align: top !important;
+                box-sizing: border-box !important;
             }
 
             .detail-table th {
@@ -96,10 +139,10 @@
             }
 
             .image-row img {
-                max-width: 300px;
-                max-height: 200px;
-                margin: 0 0px;
-                border: 1px solid #ccc;
+                max-width: 300px !important;
+                max-height: 200px !important;
+                margin: 0 0px !important;
+                border: 1px solid #ccc !important;
             }
 
             .wrap-text {
@@ -148,14 +191,14 @@
         <table>
         <thead>
             <tr>
-                <th>Sl. No</th>
-                <th>Date</th>
-                <th>President</th>
-                <th>Area</th>
-                <th>Legion</th>
-                <th>Program</th>
-                <th>Program Area</th>
-                <th>Details</th>
+                <th class="col-slno">Sl. No</th>
+                <th class="col-date">Date</th>
+                <!-- <th class="col-president">President</th>
+                <th class="col-area">Area</th>
+                <th class="col-legion">Legion</th> -->
+                <th class="col-program">Program</th>
+                <th class="col-program-area">Program Area</th>
+                <th class="col-details">Details</th>
             </tr>
         </thead>
         <tbody>
@@ -163,14 +206,14 @@
                 <?php foreach ($report_data as $i => $row): ?>
  
     <tr>
-        <td><?= $i + 1 ?></td>
-        <td><?= htmlspecialchars($row->date) ?></td>
-        <td><?= htmlspecialchars($row->member_name) ?></td>
-        <td><?= htmlspecialchars($row->area_name) ?></td>
-        <td><?= htmlspecialchars($row->legion_name) ?></td>
-        <td><?= htmlspecialchars($row->title) ?></td>
-        <td><?= htmlspecialchars($row->program_area) ?></td>
-        <td><?= htmlspecialchars($row->description) ?></td>
+        <td class="col-slno" ><?= $i + 1 ?></td>
+        <td class="col-date"><?= htmlspecialchars($row->date) ?></td>
+        <!-- <td class="col-president"><?= htmlspecialchars($row->member_name) ?></td>
+        <td class="col-area"><?= htmlspecialchars($row->area_name) ?></td>
+        <td class="col-legion"><?= htmlspecialchars($row->legion_name) ?></td> -->
+        <td class="col-program"><?= htmlspecialchars($row->title) ?></td>
+        <td class="col-program-area"><?= htmlspecialchars($row->program_area) ?></td>
+        <td class="col-details"><?= htmlspecialchars($row->description) ?></td>
     </tr>
 <?php endforeach; ?>
 
@@ -204,32 +247,32 @@
         <tr>
             <td colspan="2" class="wrap-text"><strong>Description:</strong> <?= htmlspecialchars($report->description) ?></td>
         </tr>
-  <tr class="image-row">
-    <td style="text-align: center; vertical-align: top;">
-        <table width="100%">
-            <tr>
-                <td style="font-weight: bold; font-size: 14px; padding: 4px;">Active Image</td>
-            </tr>
-            <tr>
-                <td>
-                    <img src="<?= 'uploads/happy_story_image/' . $report->activity_photo ?>" alt="Active Image" style="max-width: 100%; height: auto; max-height: 200px;">
-                </td>
-            </tr>
-        </table>
-    </td>
-    <td style="text-align: center; vertical-align: top;">
-        <table width="100%">
-            <tr>
-                <td style="font-weight: bold; font-size: 14px; padding: 4px;">Press Coverage Image</td>
-            </tr>
-            <tr>
-                <td>
-                    <img src="<?= 'uploads/happy_story_image/' . ($report->press_coverage ?? 'user1.jpeg') ?>" alt="Press Image" style="max-width: 100%; height: auto; max-height: 200px;">
-                </td>
-            </tr>
-        </table>
-    </td>
-</tr>
+        <tr class="image-row">
+            <td style="text-align: center; vertical-align: top;">
+                <table width="100%">
+                    <tr>
+                        <td style="font-weight: bold; font-size: 14px; padding: 4px;">Active Image</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="<?= 'uploads/happy_story_image/' . $report->activity_photo ?>" alt="Active Image" style="max-width: 100%; height: auto; max-height: 200px;">
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td style="text-align: center; vertical-align: top;">
+                <table width="100%">
+                    <tr>
+                        <td style="font-weight: bold; font-size: 14px; padding: 4px;">Press Coverage Image</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <img src="<?= 'uploads/happy_story_image/' . ($report->press_coverage ?? 'user1.jpeg') ?>" alt="Press Image" style="max-width: 100%; height: auto; max-height: 200px;">
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
 
     </table>
 
