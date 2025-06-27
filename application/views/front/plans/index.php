@@ -95,7 +95,7 @@
                             </div>
                         <?php endif; ?>
 
-                                    <p style="font-size: 25px"><b><?=currency('','def').$value->amount?></b></p>
+                                    <p style="font-size: 25px"><b><?=currency('','def').(isset($value->total_amount) ? number_format($value->total_amount, 2) : $value->amount)?></b></p>
 
                                                 <div class="py-2 text-center mb-2">
                 <?php

@@ -2760,8 +2760,17 @@ public function member_profile($para1 = "", $para2 = "")
             $page_data['page']          = "plans";
             $page_data['bottom']        = "plans.php";
             $page_data['page_url']      = "home/plans";
-            $page_data['all_plans']     = $this->db->get("plan")->result();
-            //echo '<pre>';print_r($page_data);exit;
+
+            // Fetch all plans
+            $plans = $this->db->get("plan")->result();
+
+            // Calculate total_amount = amount + gst for each plan dynamically without updating database
+            foreach ($plans as $plan) {
+                $plan->total_amount = $plan->amount + ($plan->amount * $plan->gst / 100);
+            }
+
+            $page_data['all_plans'] = $plans;
+
             if ($this->session->flashdata('alert') == "paypal_cancel") {
                 $page_data['danger_alert'] = translate("you_have_canceled_your_payment_via_paypal!");
             }

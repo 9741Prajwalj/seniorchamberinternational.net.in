@@ -6328,7 +6328,8 @@ if ($para1 == "") {
 	$plans = $this->db->where('contribution', 0)->get("plan")->result();
 	// Calculate total_amount = amount + gst for each plan
 	foreach ($plans as $plan) {
-		$plan->total_amount = $plan->amount + ($plan->amount * $plan->gst / 100);
+		$gst_amount = ($plan->amount * $plan->gst) / 100;
+		$plan->total_amount = $plan->amount + $gst_amount;
 	}
 	$page_data['all_plans'] = $plans;
 	//echo '<pre>';print_r($page_data);exit;

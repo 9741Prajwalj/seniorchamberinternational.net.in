@@ -4,7 +4,8 @@
 	<div id="page-head">
 		<!--Page Title-->	
 		<div id="page-title">
-			<h1 class="page-header text-overflow"><?php echo translate('membership_fees')?></h1>
+			<!-- <h1 class="page-header text-overflow"><?php echo translate('membership_fees')?></h1> -->
+			<h1 class="page-header text-overflow"><?php echo ('CONTRIBUTION FEES')?></h1>
 
 		</div>		
 		<!--End page title-->
@@ -34,11 +35,11 @@
 	            </div>
 			<?php endif ?>
 			<div class="panel-heading">
-				<h3 class="panel-title"><?php echo translate('membership_details')?></h3>
+				<h3 class="panel-title"><?php echo ('Contribution Details')?></h3>
 			</div>
-			<div class="text-right" style="margin-right: 30px">
-<a href="<?=base_url()?>admin/contribution/add_package" id="demo-dt-view-btn" class="btn btn-primary add-tooltip"><i class="fa fa-plus"></i> <?php echo translate('add_new_package')?></a>
-			</div>
+			<!-- <div class="text-right" style="margin-right: 30px">
+					<a href="<?=base_url()?>admin/contribution/add_package" id="demo-dt-view-btn" class="btn btn-primary add-tooltip"><i class="fa fa-plus"></i> <?php echo translate('add_new_package')?></a>
+			</div> -->
 			<div class="panel-body">
 
 				<?php foreach ($all_plans as $value): ?>
