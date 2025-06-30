@@ -121,7 +121,7 @@
                 <a 
                     href="<?= ($block_user) ? '#' : $purchase_link ?>" 
                     class="btn btn-styled btn-sm btn-base-1 btn-outline btn-circle"
-                    onclick="<?= ($block_user) ? "alert('You can’t pay. Only President and Secretary can pay.'); return false;" : '' ?>"
+                    onclick="<?= ($block_user) ? "alert('You can’t pay. Only President and Treasurer can pay.'); return false;" : '' ?>"
                 >
                     <span class="<?= $package_class ?>"><?= translate('pay_now') ?></span>
                 </a>

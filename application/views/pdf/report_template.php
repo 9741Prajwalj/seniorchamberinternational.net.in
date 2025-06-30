@@ -9,7 +9,7 @@
                 border: 3px solid #10A182; 
                 box-sizing: border-box;
             }
-
+             
             .page-break {
                 page-break-after: always;
             }
@@ -29,7 +29,6 @@
                 height: auto;
                 margin-bottom: 10px;
             }
-
 
             .company-logo {
                 max-width: 150px;
@@ -182,6 +181,7 @@
 
 
 
+    <?php if (!empty($report_data)): ?>
     <div class="page-break"></div>
 
     <!-- Page 2: Summary Table -->
@@ -202,8 +202,7 @@
             </tr>
         </thead>
         <tbody>
-            <?php if (!empty($report_data)): ?>
-                <?php foreach ($report_data as $i => $row): ?>
+            <?php foreach ($report_data as $i => $row): ?>
  
     <tr>
         <td class="col-slno" ><?= $i + 1 ?></td>
@@ -217,9 +216,6 @@
     </tr>
 <?php endforeach; ?>
 
-            <?php else: ?>
-                <tr><td colspan="8">No data available</td></tr>
-            <?php endif; ?>
         </tbody>
     </table>
 
@@ -280,6 +276,7 @@
         <div class="page-break"></div>
     <?php endif; ?>
 <?php endforeach; ?>
+<?php endif; ?>
 
 
 
