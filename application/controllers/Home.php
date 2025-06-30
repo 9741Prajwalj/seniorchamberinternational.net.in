@@ -125,7 +125,11 @@ class Home extends CI_Controller {
         }
 
         $page_data['happy_stories'] = $this->db->get_where('happy_story', array('approval_status' => 1), $max_story_num)->result();
-        $page_data['all_plans'] = $this->db->get("plan")->result();
+        $plans = $this->db->get("plan")->result();
+        foreach ($plans as $plan) {
+            $plan->total_amount = $plan->amount + ($plan->amount * $plan->gst / 100);
+        }
+        $page_data['all_plans'] = $plans;
         $page_data['page_url'] = "";
         $this->load->view('front/index', $page_data);
     }

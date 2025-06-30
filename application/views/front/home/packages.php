@@ -33,7 +33,7 @@
                             </div>
                             <div class="block-content">
                                 <h3 class="heading heading-5 strong-500"><?=$value->name?></h3>
-                                <h3 class="price-tag" style="font-size: 26px;"><?=currency($value->amount)?></h3>
+                                <h3 class="price-tag" style="font-size: 26px;"><?=currency(isset($value->total_amount) ? $value->total_amount : $value->amount)?></h3>
                                 <!--<ul class="pl-0 pr-0 mt-0">-->
                                 <!--    <?php if($value->exp_int_status == 0) { ?>-->
                                 <!--    <li class="<?=$package_class?> package_items"><?=translate('president:')?> <?=$value->president?> <?=translate('times')?></li>-->
