@@ -162,6 +162,7 @@
         .footer-contact {
             position: absolute;
             bottom: 0;
+            left: 0;
             width: 100%;
             text-align: center;
             padding: 20px 40px;
@@ -188,18 +189,18 @@
             color: #10A182;
             font-size: 16px;
             padding: 10px 0;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             font-weight: bold;
         }
         .footer-contact .contact-details p {
-            margin: 5px 0;
+            margin: 10px 0 8px 0;
             padding: 0;
             display: block;
             text-align: left;
         }
         .footer-contact .contact-details p strong {
             display: block;
-            margin-top: 10px;
+            margin-top: 0;
             margin-bottom: 3px;
             font-weight: bold;
             font-size: 14px;
@@ -269,6 +270,15 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
+        <div class="footer-contact">
+            <div class="contact-title">Contact Information</div>
+            <div class="border"></div>
+            <div class="contact-details" style="text-align: left;">
+                <p><strong>MAIL: </strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scins2122@gmail.com</p><br>
+                <p><strong>CONTACT: </strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+91 97452 21380</p><br>
+                <p><strong>ADDRESS: </strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GF 20 , VYAPARABHAVAN CALICUT,KERALA- 673 001</p>
+            </div>
+        </div>
     </div>
 
     <div class="page-break"></div>
@@ -324,21 +334,16 @@
                     </td>
                 </tr>
             </table>
-            <?php if ($is_last_page): ?>
-                <div class="footer-contact">
-                    <div class="border"></div>
-                    <div class="contact-title">Contact Information</div>
-                    <div class="contact-details" style="text-align: left; padding-left: 40px;">
-                        <p><strong>MAIL & TIMINGS</strong></p>
-                        <p>scins2122@gmail.com</p>
-                        <p>10:00 AM to 07:00 PM</p>
-                        <p><strong>CONTACT</strong></p>
-                        <p>+91 97452 21380</p>
-                        <p><strong>ADDRESS</strong></p>
-                        <p>GF 20 , VYAPARABHAVAN CALICUT,KERALA- 673 001</p>
-                    </div>
+            <?php // Removed last page condition to show footer on all pages ?>
+            <div class="footer-contact">
+                <div class="contact-title">Contact Information</div>
+                <div class="border"></div>
+                <div class="contact-details" style="text-align: left;">
+                    <p><strong>MAIL: </strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scins2122@gmail.com</p><br>
+                    <p><strong>CONTACT: </strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+91 97452 21380</p><br>
+                    <p><strong>ADDRESS: </strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GF 20 , VYAPARABHAVAN CALICUT,KERALA- 673 001</p>
                 </div>
-            <?php endif; ?>
+            </div>
         </div>
         <?php if ((($i + 1) % 2 === 0) && ($i + 1 < count($report_data))) : ?>
             <div class="page-break"></div>
