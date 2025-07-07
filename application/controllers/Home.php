@@ -2786,20 +2786,24 @@ public function member_profile($para1 = "", $para2 = "")
             }
             $this->load->view('front/index', $page_data);
         }
-        elseif ($para1=="subscribe") {
-            if ($this->member_permission() == FALSE) {
-                redirect(base_url().'home/login', 'refresh');
-            }
-            if ($para2==1) {
-                redirect(base_url().'home/plans', 'refresh');
-            }
-            $page_data['title'] = "Premium Plans || ".$this->system_title;
-            $page_data['top'] = "plans.php";
-            $page_data['page'] = "subscribe";
-            $page_data['bottom'] = "plans.php";
-            $page_data['selected_plan'] = $this->db->get_where("plan", array("plan_id" => $para2))->result();
-            $this->load->view('front/index', $page_data);
-        }
+elseif ($para1=="subscribe") {
+    if ($this->member_permission() == FALSE) {
+        redirect(base_url().'home/login', 'refresh');
+    }
+    if ($para2==1) {
+        redirect(base_url().'home/plans', 'refresh');
+    }
+    $page_data['title'] = "Premium Plans || ".$this->system_title;
+    $page_data['top'] = "plans.php";
+    $page_data['page'] = "subscribe";
+    $page_data['bottom'] = "plans.php";
+    $selected_plan = $this->db->get_where("plan", array("plan_id" => $para2))->result();
+    foreach ($selected_plan as $plan) {
+        $plan->total_amount = $plan->amount + ($plan->amount * $plan->gst / 100);
+    }
+    $page_data['selected_plan'] = $selected_plan;
+    $this->load->view('front/index', $page_data);
+}
     }
     function contribution($para1 = "", $para2 = "")
     {
@@ -3832,7 +3836,7 @@ if ($para1 == "add") {
             log_message('info', 'Instamojo Payment Initiated. Member ID: ' . $member_id . ', Plan ID: ' . $plan_id);
         
             $plan = $this->db->get_where('plan', array('plan_id' => $plan_id))->row();
-            $amount = $plan->amount;
+            $amount = $plan->amount + ($plan->amount * $plan->gst / 100);
             $package_name = $plan->name;
         
             $data['plan_id'] = $plan_id;
