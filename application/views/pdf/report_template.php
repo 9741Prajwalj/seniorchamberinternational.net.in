@@ -125,15 +125,16 @@
 
         .image-row td {
             text-align: center;
-            border: none;
-            padding-top: 10px;
+            border: 1px solid #10A182;
+            padding: 4px;
         }
 
         .image-row img {
-            max-width: 300px !important;
+            max-width: 100% !important;
             max-height: 200px !important;
-            margin: 0 0px !important;
+            margin: 0 !important;
             border: 1px solid #ccc !important;
+            height: auto !important;
         }
 
         .wrap-text {
@@ -157,6 +158,7 @@
             box-sizing: border-box;
             padding-bottom: 80px; /* Space for footer */
             position: relative;
+            margin-bottom: 40px;
         }
 
         .footer-contact {
@@ -274,25 +276,24 @@
             <div class="contact-title">Contact Information</div>
             <div class="border"></div>
             <div class="contact-details" style="text-align: left;">
-                <p><strong>MAIL: </strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scins2122@gmail.com</p><br>
-                <p><strong>CONTACT: </strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+91 97452 21380</p><br>
-                <p><strong>ADDRESS: </strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GF 20 , VYAPARABHAVAN CALICUT,KERALA- 673 001</p>
+                <p><strong>MAIL: </strong>            scins2122@gmail.com</p><br>
+                <p><strong>CONTACT: </strong>                     +91 97452 21380</p><br>
+                <p><strong>ADDRESS: </strong>                     GF 20 , VYAPARABHAVAN CALICUT,KERALA- 673 001</p>
             </div>
         </div>
     </div>
-
-    <div class="page-break"></div>
 
     <!-- Detailed Pages -->
     <?php
     $report_count = count($report_data);
     foreach ($report_data as $i => $report):
-        $is_last_page = ($i == $report_count - 1 && $report_count % 2 == 1) || ($i == $report_count - 2 && $report_count % 2 == 0);
+        $sl_no = $i + 1; // Ensure ascending order starting from 1
     ?>
+        <div class="page-break"></div>
         <div class="page-container">
             <table class="detail-table">
                 <tr>
-                    <th colspan="2">Sl. No: <?= $i + 1 ?> — Project Name: <?= htmlspecialchars($report->title) ?></th>
+                    <th colspan="2">Sl. No: <?= $sl_no ?> — Project Name: <?= htmlspecialchars($report->title) ?></th>
                 </tr>
                 <tr>
                     <td><strong>Area Name:</strong> <?= htmlspecialchars($report->area_name) ?></td>
@@ -308,46 +309,26 @@
                     <td colspan="2" class="wrap-text"><strong>Description:</strong> <?= htmlspecialchars($report->description) ?></td>
                 </tr>
                 <tr class="image-row">
-                    <td style="text-align: center; vertical-align: top;">
-                        <table width="100%">
-                            <tr>
-                                <td style="font-weight: bold; font-size: 14px; padding: 4px;">Active Image</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <img src="<?= 'Uploads/happy_story_image/' . $report->activity_photo ?>" alt="Active Image" style="max-width: 100%; height: auto; max-height: 200px;">
-                                </td>
-                            </tr>
-                        </table>
+                    <td style="padding: 4px; text-align: center; border: 1px solid #10A182;">
+                        <div style="font-weight: bold; font-size: 14px; margin-bottom: 6px;">Active Image</div>
+                        <img src="<?= 'Uploads/happy_story_image/' . $report->activity_photo ?>" alt="Active Image" style="max-width: 100%; max-height: 200px; height: auto; margin: 0; border: 1px solid #ccc;">
                     </td>
-                    <td style="text-align: center; vertical-align: top;">
-                        <table width="100%">
-                            <tr>
-                                <td style="font-weight: bold; font-size: 14px; padding: 4px;">Press Coverage Image</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <img src="<?= 'Uploads/happy_story_image/' . ($report->press_coverage ?? 'user1.jpeg') ?>" alt="Press Image" style="max-width: 100%; height: auto; max-height: 200px;">
-                                </td>
-                            </tr>
-                        </table>
+                    <td style="padding: 4px; text-align: center; border: 1px solid #10A182;">
+                        <div style="font-weight: bold; font-size: 14px; margin-bottom: 6px;">Press Coverage Image</div>
+                        <img src="<?= 'Uploads/happy_story_image/' . ($report->press_coverage ?? 'user1.jpeg') ?>" alt="Press Image" style="max-width: 100%; max-height: 200px; height: auto; margin: 0; border: 1px solid #ccc;">
                     </td>
                 </tr>
             </table>
-            <?php // Removed last page condition to show footer on all pages ?>
             <div class="footer-contact">
                 <div class="contact-title">Contact Information</div>
                 <div class="border"></div>
                 <div class="contact-details" style="text-align: left;">
-                    <p><strong>MAIL: </strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scins2122@gmail.com</p><br>
-                    <p><strong>CONTACT: </strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+91 97452 21380</p><br>
-                    <p><strong>ADDRESS: </strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GF 20 , VYAPARABHAVAN CALICUT,KERALA- 673 001</p>
+                    <p><strong>MAIL: </strong>            scins2122@gmail.com</p><br>
+                    <p><strong>CONTACT: </strong>                     +91 97452 21380</p><br>
+                    <p><strong>ADDRESS: </strong>                      GF 20 , VYAPARABHAVAN CALICUT,KERALA- 673 001</p>
                 </div>
             </div>
         </div>
-        <?php if ((($i + 1) % 2 === 0) && ($i + 1 < count($report_data))) : ?>
-            <div class="page-break"></div>
-        <?php endif; ?>
     <?php endforeach; ?>
 <?php endif; ?>
 
