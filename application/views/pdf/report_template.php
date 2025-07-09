@@ -264,7 +264,7 @@
                 <?php foreach ($report_data as $i => $row): ?>
                     <tr>
                         <td class="col-slno"><?= $i + 1 ?></td>
-                        <td class="col-date"><?= htmlspecialchars($row->date) ?></td>
+                        <td class="col-date"><?= htmlspecialchars($row->program_date) ?></td>
                         <td class="col-program"><?= htmlspecialchars($row->title) ?></td>
                         <td class="col-program-area"><?= htmlspecialchars($row->program_area) ?></td>
                         <td class="col-details"><?= htmlspecialchars($row->description) ?></td>
