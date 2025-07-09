@@ -4786,12 +4786,28 @@ function stories($para1 = "", $para2 = "", $para3 = "")
 			} elseif ($para1 == "view_detail") {
 				$data['payment_id'] = $para2;
 				return $this->load->view('back/earnings/custom_payment_method_details', $data);
-			} elseif ($para1 == "download_cpm_bill_copy") {
-				$cpm_bill_copy = $this->db->get_where('package_payment', array('package_payment_id' => $para2))->row()->custom_payment_method_bill_copy;
-				$this->load->helper('download');
-				$link = 'uploads/custom_payment_method_bill_image/' . $cpm_bill_copy;
-				force_download($link, NULL);
-			} elseif ($para1 == "accept_payment") {
+			}elseif ($para1 == "download_cpm_bill_copy") {
+			$cpm_bill_copy = $this->db->get_where('package_payment', array('package_payment_id' => $para2))->row()->custom_payment_method_bill_copy;
+			$this->load->helper('download');
+			$link = 'uploads/custom_payment_method_bill_image/' . $cpm_bill_copy;
+			force_download($link, NULL);
+		} elseif ($para1 == "download_payment_pdf") {
+			$payment_id = $para2;
+			$details = $this->db->get_where('package_payment', array('package_payment_id' => $payment_id))->row();
+			if (!$details) {
+				show_404();
+				return;
+			}
+			$data['details'] = $details;
+			$this->load->library('pdf');
+			$html = $this->load->view('back/earnings/payment_details_pdf', $data, true);
+			$dompdf = new pdf();
+			$dompdf->loadHtml($html);
+			$dompdf->set_option('isRemoteEnabled', TRUE);
+			$dompdf->render();
+			$fileName = 'Payment_Details_' . $payment_id;
+			$dompdf->stream($fileName . ".pdf", array("Attachment" => 1));
+		} elseif ($para1 == "accept_payment") {
 				$payment_details = $this->db->get_where('package_payment', array('package_payment_id' => $para2))->row();
 
 				$member_details = $this->db->get_where('member', array('member_id' => $payment_details->member_id))->row();

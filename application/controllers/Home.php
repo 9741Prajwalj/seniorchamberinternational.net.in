@@ -68,17 +68,17 @@ class Home extends CI_Controller {
          $data2=$to;
         $this->load->library('email');
         $config['protocol']    = 'smtp';
-        $config['smtp_host']    = 'mail.edigamatchmaker.com';
-        $config['smtp_port']    = '587';
+        $config['smtp_host']    = 'mail.seniorchamberinternational.net.in';
+        $config['smtp_port']    = '465';
         $config['smtp_timeout'] = '7';
-        $config['smtp_user']    = 'birthdaywish@edigamatchmaker.com';
-        $config['smtp_pass']    = 'Admin@123';
+        $config['smtp_user']    = 'admin@seniorchamberinternational.net.in';
+        $config['smtp_pass']    = 'Admin@seniorchamber';
         $config['charset']    = 'utf-8';
         $config['newline']    = "\r\n";
         $config['mailtype'] = 'html'; // or html
         $config['validation'] = TRUE; // bool whether to validate email or not      
         $this->email->initialize($config);
-        $this->email->from('birthdaywish@edigamatchmaker.com', 'birthdaywish@edigamatchmaker.com');
+        $this->email->from('admin@seniorchamberinternational.net.in', 'admin@seniorchamberinternational.net.in');
         $this->email->to($data2);
        
         $this->email->subject('Birthday Wishes');
@@ -6145,17 +6145,17 @@ if ($para1 == "add") {
         $data2=$value['email'];
         $this->load->library('email');
         $config['protocol']    = 'smtp';
-        $config['smtp_host']    = 'mail.edigamatchmaker.com';
-        $config['smtp_port']    = '587';
+        $config['smtp_host']    = 'mail.seniorchamberinternational.net.in';
+        $config['smtp_port']    = '465';
         $config['smtp_timeout'] = '7';
-        $config['smtp_user']    = 'birthdaywish@edigamatchmaker.com';
-        $config['smtp_pass']    = 'Admin@123';
+        $config['smtp_user']    = 'admin@seniorchamberinternational.net.in';
+        $config['smtp_pass']    = 'Admin@seniorchamber';
         $config['charset']    = 'utf-8';
         $config['newline']    = "\r\n";
         $config['mailtype'] = 'html'; // or html
         $config['validation'] = TRUE; // bool whether to validate email or not      
         $this->email->initialize($config);
-        $this->email->from('birthdaywish@edigamatchmaker.com', 'birthdaywish@edigamatchmaker.com');
+        $this->email->from('admin@seniorchamberinternational.net.in', 'admin@seniorchamberinternational.net.in');
         $this->email->to($data2);
        
         $this->email->subject('Birthday Wishes');

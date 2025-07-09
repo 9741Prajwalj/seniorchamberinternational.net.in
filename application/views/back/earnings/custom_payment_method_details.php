@@ -35,6 +35,7 @@
             <?php } else {?>
                 <button class="btn btn-success add-tooltip"><?=translate('payment_already_accepted')?></button>
             <?php } ?>
+            <a href="<?=base_url()?>admin/earnings/download_payment_pdf/<?=$payment_id?>" class="btn btn-primary btn-sm"><?=translate('download_pdf')?></a>
             <button data-dismiss="modal" class="btn btn-danger btn-sm" type="button" id="cp_metho_modal_close"><?php echo translate('close')?></button>
         </div>
         <script>
@@ -93,6 +94,7 @@
         </div>
         <!--Modal footer-->
         <div class="modal-footer">
+            <a href="<?=base_url()?>admin/earnings/download_payment_pdf/<?=$payment_id?>" class="btn btn-primary btn-sm"><?=translate('download_pdf')?></a>
             <button data-dismiss="modal" class="btn btn-danger btn-sm" type="button" id="cp_metho_modal_close"><?php echo translate('close')?></button>
         </div>
     <?php }?>
