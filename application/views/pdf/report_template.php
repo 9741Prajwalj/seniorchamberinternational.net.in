@@ -7,7 +7,7 @@
             font-family: sans-serif;
             font-size: 12px;
             margin: 0;
-            border: 3px solid #10A182;
+            border: 3px solid #3d7ffac6;
             box-sizing: border-box;
         }
          
@@ -41,7 +41,7 @@
             padding-top: 10px;
             text-align: center;
             margin-bottom: 15px;
-            color: #10A182;
+            color: #3d7ffac6;
             font-size: 24px;
             padding: 0 15mm;
         }
@@ -68,7 +68,7 @@
         }
 
         th {
-            background-color: #10A182;
+            background-color: #3d7ffac6;
             color: white;
         }
 
@@ -104,7 +104,7 @@
         }
 
         .detail-table {
-            border: 2px solid #10A182;
+            border: 2px solid #3d7ffac6;
             width: 100% !important;
             table-layout: fixed !important;
             word-wrap: break-word !important;
@@ -112,20 +112,20 @@
         }
 
         .detail-table th, .detail-table td {
-            border: 1px solid #10A182;
+            border: 1px solid #3d7ffac6;
             padding: 8px;
             vertical-align: top !important;
             box-sizing: border-box !important;
         }
 
         .detail-table th {
-            background-color: #10A182;
+            background-color: #3d7ffac6;
             color: white;
         }
 
         .image-row td {
             text-align: center;
-            border: 1px solid #10A182;
+            border: 1px solid #3d7ffac6;
             padding: 4px;
         }
 
@@ -172,7 +172,7 @@
             color: #333;
             line-height: 1.8;
             background-color: #f9f9f9;
-            border-top: 2px solid #10A182;
+            border-top: 2px solid #3d7ffac6;
             box-sizing: border-box;
             z-index: 10;
         }
@@ -184,11 +184,11 @@
             line-height: 1.5;
         }
         .footer-contact .border {
-            border-top: 2px solid #10A182;
+            border-top: 2px solid #3d7ffac6;
             margin: 5px 0 10px;
         }
         .footer-contact .contact-title {
-            color: #10A182;
+            color: #3d7ffac6;
             font-size: 16px;
             padding: 10px 0;
             margin-bottom: 10px;
@@ -206,7 +206,7 @@
             margin-bottom: 3px;
             font-weight: bold;
             font-size: 14px;
-            color: #10A182;
+            color: #3d7ffac6;
         }
         .footer-contact .social-media {
             list-style: none;
@@ -217,7 +217,7 @@
             gap: 10px;
         }
         .footer-contact .social-media li a {
-            color: #10A182;
+            color: #3d7ffac6;
             text-decoration: none;
             font-size: 14px;
         }
@@ -309,13 +309,13 @@
                     <td colspan="2" class="wrap-text"><strong>Description:</strong> <?= htmlspecialchars($report->description) ?></td>
                 </tr>
                 <tr class="image-row">
-                    <td style="padding: 4px; text-align: center; border: 1px solid #10A182;">
+                    <td style="padding: 4px; text-align: center; border: 1px solid #3d7ffac6;">
                         <div style="font-weight: bold; font-size: 14px; margin-bottom: 6px;">Active Image</div>
                         <img src="<?= 'Uploads/happy_story_image/' . $report->activity_photo ?>" alt="Active Image" style="max-width: 100%; max-height: 200px; height: auto; margin: 0; border: 1px solid #ccc;">
                     </td>
-                    <td style="padding: 4px; text-align: center; border: 1px solid #10A182;">
+                    <td style="padding: 4px; text-align: center; border: 1px solid #3d7ffac6;">
                         <div style="font-weight: bold; font-size: 14px; margin-bottom: 6px;">Press Coverage Image</div>
-                        <img src="<?= 'Uploads/happy_story_image/' . ($report->press_coverage ?? 'user1.jpeg') ?>" alt="Press Image" style="max-width: 100%; max-height: 200px; height: auto; margin: 0; border: 1px solid #ccc;">
+                        <img src="<?= 'Uploads/happy_story_image/' . ($report->press_coverage ?? 'company_logo.jpg') ?>" alt="Press Image" style="max-width: 100%; max-height: 200px; height: auto; margin: 0; border: 1px solid #ccc;">
                     </td>
                 </tr>
             </table>
