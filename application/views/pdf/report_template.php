@@ -80,17 +80,17 @@
             text-align: center;
         }
         .col-date {
-            width: 30px !important;
-            min-width: 30px;
-            max-width: 30px;
+            width: 20px !important;
+            min-width: 20px;
+            max-width: 20px;
             padding: 8px !important;
             text-align: left;
         }
 
         .col-program, .col-program-area {
-            width: 70px !important;
-            min-width: 70px;
-            max-width: 70px;
+            width: 30px !important;
+            min-width: 30px;
+            max-width: 30px;
             padding: 8px !important;
             text-align: left;
         }
