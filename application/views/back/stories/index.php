@@ -72,11 +72,11 @@ $story_data = $this->db->select('*')->from('happy_story')->where('approval_statu
                                 $year = date('Y');
                                 $next_year = $year + 1;
                                 $ranges = [
-                                    ['start' => "$year-04-01", 'end' => "$year-05-31"],
-                                    ['start' => "$year-06-01", 'end' => "$year-07-30"],
-                                    ['start' => "$year-08-01", 'end' => "$year-09-30"],
-                                    ['start' => "$year-10-01", 'end' => "$year-11-30"],
-                                    ['start' => "$year-12-01", 'end' => "$next_year-02-20"],
+                                    ['start' => "$year-04-01", 'end' => "$year-06-10"],
+                                    ['start' => "$year-06-11", 'end' => "$year-08-10"],
+                                    ['start' => "$year-08-11", 'end' => "$year-10-10"],
+                                    ['start' => "$year-10-11", 'end' => "$year-12-10"],
+                                    ['start' => "$year-12-11", 'end' => "$next_year-02-20"],
                                 ];
                                 foreach ($ranges as $range) {
                                     $label = date('j M', strtotime($range['start'])) . ' - ' . date('j M', strtotime($range['end']));
