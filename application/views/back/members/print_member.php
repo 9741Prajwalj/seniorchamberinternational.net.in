@@ -79,7 +79,7 @@
         <tr> 
           <td width="18%"> 
             <p>
-              <img src="<?=base_url()?>uploads/header_logo/header_logo_1599228561.jpeg">
+              <img src="<?=FCPATH?>uploads/header_logo/header_logo_1747139102.jpg">
             </p>
           </td>
 
@@ -134,7 +134,7 @@
           <td width="5%"></td> 
           <td width="15%">
             <p>
-              <img src="<?=base_url()?>uploads/profile_image/<?=$image[0]['thumb']?>" class="profile_img">
+              <img src="<?=FCPATH?>uploads/profile_image/<?=$image[0]['thumb']?>" class="profile_img">
             </p>
           </td>
 
@@ -295,7 +295,7 @@
         <tbody>
           <tr class="tra">
               <td class="ha">Height</td>
-              <td class="da"><?=$value->height.' '.translate('feet')?></td>
+              <td class="da"><?=is_numeric($value->height) ? $value->height : '0'?> <?=translate('feet')?></td>
 
               <td class="ha">Weight</td>
               <td class="da"><?=$physical_attributes[0]['weight']?></td>
@@ -680,19 +680,19 @@
         <tbody>
           <tr class="tra">
             <td class="ha">Home District</td>
-            <td class="da"><?php echo ucfirst($additional_personal_details[0]['home_district']) ?></td>
+            <td class="da"><?php echo isset($additional_personal_details[0]['home_district']) ? ucfirst($additional_personal_details[0]['home_district']) : '' ?></td>
 
             <td class="ha">Family Residence</td>
-            <td class="da"><?php echo ucfirst($additional_personal_details[0]['family_residence']) ?></td>
-          </tr>                    
+            <td class="da"><?php echo isset($additional_personal_details[0]['family_residence']) ? ucfirst($additional_personal_details[0]['family_residence']) : '' ?></td>
+        </tr>                    
 
-          <tr class="tra">
+        <tr class="tra">
             <td class="ha">Father's Occupation</td>
-            <td class="da"><?php echo ucfirst($additional_personal_details[0]['fathers_occupation']) ?></td>
+            <td class="da"><?php echo isset($additional_personal_details[0]['fathers_occupation']) ? ucfirst($additional_personal_details[0]['fathers_occupation']) : '' ?></td>
 
             <td class="ha">Special Circumstances</td>
-            <td class="da"><?php echo ucfirst($additional_personal_details[0]['special_circumstances']) ?></td>	                        
-          </tr>
+            <td class="da"><?php echo isset($additional_personal_details[0]['special_circumstances']) ? ucfirst($additional_personal_details[0]['special_circumstances']) : '' ?></td>	                        
+        </tr>
         </tbody>
       </table>
     	<?php } ?>

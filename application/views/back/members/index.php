@@ -607,6 +607,7 @@ $(document).ready(function() {
                 // {
                 //     "data": "sub_caste"
                 // },
+                ,
                 {
                     "data": "member_since"
                 },
@@ -667,6 +668,7 @@ $(document).ready(function() {
                 // {
                 //     "data": "sub_caste"
                 // },
+                ,
                 {
                     "data": "member_since"
                 },
@@ -720,7 +722,7 @@ $(document).ready(function() {
             { "data": "member_id" },
             { "data": "name" },
             <?php $member_approval = $this->db->get_where('general_settings', array('type' => 'member_approval_by_admin'))->row()->value;
-                if($member_approval == 'yes') { ?> 
+                if($member_approval == 'yes') { ?>
             { "data": "status" },
             <?php } ?>
             { "data": "member_since" },

@@ -1514,20 +1514,17 @@ public function delete_area()
 					$page_data['file']	 	= "edit_member.php";
 					$page_data['bottom'] 	= "members/members.php";
 					$page_data['get_free_member_by_id'] = $this->db->get_where("member", array("membership" => 1, "member_id" => $para3))->result();
-				} elseif ($para2 == "print_member") {
+				}
+				elseif ($para2 == "print_member") {
 					$this->load->library('pdf');
 					$page_data['get_free_member_by_id'] = $this->db->get_where("member", array("membership" => 1, "member_id" => $para3))->result();
-					$page_data['member_type'] = "Visitors";
+					$page_data['member_type'] = "Free";
 					$page_data['parameter'] 	= "free_members";
 					$page_data['page_name'] 	= "free_members";
 					$this->load->view('back/members/print_member', $page_data);
 					$html = $this->output->get_output();
 					$dompdf = new pdf();
-					$dompdf->loadHtml($html);
-					$dompdf->set_option('isRemoteEnabled', TRUE);
-					$dompdf->render();
-					$fileName = $page_data['get_free_member_by_id'][0]->first_name . " " . $page_data['get_free_member_by_id'][0]->last_name . " " . "Member Details";
-					$dompdf->stream($fileName . ".pdf", array("Attachment" => 0));
+					$dompdf->create($html, $page_data['get_free_member_by_id'][0]->first_name . " " . $page_data['get_free_member_by_id'][0]->last_name . " Member Details");
 				} 
 				elseif ($para2 == "starmatching") {
 					$page_data['top'] = "members/index.php";
@@ -1581,20 +1578,17 @@ public function delete_area()
 					$page_data['file']	 	= "edit_member.php";
 					$page_data['bottom'] 	= "members/members.php";
 					$page_data['get_premium_member_by_id'] = $this->db->get_where("member", array("membership" => 2, "member_id" => $para3))->result();
-				} elseif ($para2 == "print_member") {
+				}
+				 elseif ($para2 == "print_member") {
 					$this->load->library('pdf');
 					$page_data['get_premium_member_by_id'] = $this->db->get_where("member", array("membership" => 2, "member_id" => $para3))->result();
-					$page_data['member_type'] = "Legions";
+					$page_data['member_type'] = "Premium";
 					$page_data['parameter'] 	= "premium_members";
 					$page_data['page_name'] 	= "premium_members";
 					$this->load->view('back/members/print_member', $page_data);
 					$html = $this->output->get_output();
 					$dompdf = new pdf();
-					$dompdf->loadHtml($html);
-					$dompdf->set_option('isRemoteEnabled', TRUE);
-					$dompdf->render();
-					$fileName = $page_data['get_premium_member_by_id'][0]->first_name . " " . $page_data['get_premium_member_by_id'][0]->last_name . " " . "Member Details";
-					$dompdf->stream($fileName . ".pdf", array("Attachment" => 0));
+					$dompdf->create($html, $page_data['get_premium_member_by_id'][0]->first_name . " " . $page_data['get_premium_member_by_id'][0]->last_name . " Member Details");
 				}
 				elseif ($para2 == "starmatching") {
 					$page_data['top'] = "members/index.php";
@@ -1651,7 +1645,8 @@ public function delete_area()
 					$page_data['file']	 	= "edit_member.php";
 					$page_data['bottom'] 	= "members/members.php";
 					$page_data['get_national_member_by_id'] = $this->db->get_where("member", array("membership" => 3, "member_id" => $para3))->result();
-				} elseif ($para2 == "print_member") {
+				}
+				elseif ($para2 == "print_member") {
 					$this->load->library('pdf');
 					$page_data['get_premium_member_by_id'] = $this->db->get_where("member", array("membership" => 3, "member_id" => $para3))->result();
 					$page_data['member_type'] = "National";
@@ -1660,11 +1655,7 @@ public function delete_area()
 					$this->load->view('back/members/print_member', $page_data);
 					$html = $this->output->get_output();
 					$dompdf = new pdf();
-					$dompdf->loadHtml($html);
-					$dompdf->set_option('isRemoteEnabled', TRUE);
-					$dompdf->render();
-					$fileName = $page_data['get_premium_member_by_id'][0]->first_name . " " . $page_data['get_premium_member_by_id'][0]->last_name . " " . "Member Details";
-					$dompdf->stream($fileName . ".pdf", array("Attachment" => 0));
+					$dompdf->create($html, $page_data['get_premium_member_by_id'][0]->first_name . " " . $page_data['get_premium_member_by_id'][0]->last_name . " " . "Member Details");
 				}
 				elseif ($para2 == "starmatching") {
 					$page_data['top'] = "members/index.php";
@@ -1719,20 +1710,17 @@ public function delete_area()
 					$page_data['file']	 	= "edit_member.php";
 					$page_data['bottom'] 	= "members/members.php";
 					$page_data['get_guest_member_by_id'] = $this->db->get_where("member", array("membership" => 0, "member_id" => $para3))->result();
-				} elseif ($para2 == "print_member") {
+				}
+				elseif ($para2 == "print_member") {
 					$this->load->library('pdf');
-					$page_data['get_premium_member_by_id'] = $this->db->get_where("member", array("membership" => 0, "member_id" => $para3))->result();
-					$page_data['member_type'] = "guest";
+					$page_data['get_guest_member_by_id'] = $this->db->get_where("member", array("membership" => 0, "member_id" => $para3))->result();
+					$page_data['member_type'] = "Guest";
 					$page_data['parameter'] = "guest_members";
 					$page_data['page_name'] = "guest_members";
 					$this->load->view('back/members/print_member', $page_data);
 					$html = $this->output->get_output();
 					$dompdf = new pdf();
-					$dompdf->loadHtml($html);
-					$dompdf->set_option('isRemoteEnabled', TRUE);
-					$dompdf->render();
-					$fileName = $page_data['get_premium_member_by_id'][0]->first_name . " " . $page_data['get_premium_member_by_id'][0]->last_name . " " . "Member Details";
-					$dompdf->stream($fileName . ".pdf", array("Attachment" => 0));
+					$dompdf->create($html, $page_data['get_guest_member_by_id'][0]->first_name . " " . $page_data['get_guest_member_by_id'][0]->last_name . " Member Details");
 				}
 				elseif ($para2 == "starmatching") {
 					$page_data['top'] = "members/index.php";
@@ -1786,20 +1774,17 @@ public function delete_area()
 					$page_data['file']	 	= "edit_member.php";
 					$page_data['bottom'] 	= "members/members.php";
 					$page_data['get_ngb_member_by_id'] = $this->db->get_where("member", array("membership" => 4, "member_id" => $para3))->result();
-				} elseif ($para2 == "print_member") {
+				}
+				elseif ($para2 == "print_member") {
 					$this->load->library('pdf');
-					$page_data['get_premium_member_by_id'] = $this->db->get_where("member", array("membership" => 4, "member_id" => $para3))->result();
+					$page_data['get_ngb_member_by_id'] = $this->db->get_where("member", array("membership" => 4, "member_id" => $para3))->result();
 					$page_data['member_type'] = "Ngb";
-					$page_data['parameter'] 	= "ngb_member";
-					$page_data['page_name'] 	= "ngb_member";
+					$page_data['parameter'] 	= "ngb_members";
+					$page_data['page_name'] 	= "ngb_members";
 					$this->load->view('back/members/print_member', $page_data);
 					$html = $this->output->get_output();
 					$dompdf = new pdf();
-					$dompdf->loadHtml($html);
-					$dompdf->set_option('isRemoteEnabled', TRUE);
-					$dompdf->render();
-					$fileName = $page_data['get_premium_member_by_id'][0]->first_name . " " . $page_data['get_premium_member_by_id'][0]->last_name . " " . "Member Details";
-					$dompdf->stream($fileName . ".pdf", array("Attachment" => 0));
+					$dompdf->create($html, $page_data['get_ngb_member_by_id'][0]->first_name . " " . $page_data['get_ngb_member_by_id'][0]->last_name . " Member Details");
 				}
 				elseif ($para2 == "starmatching") {
 					$page_data['top'] = "members/index.php";

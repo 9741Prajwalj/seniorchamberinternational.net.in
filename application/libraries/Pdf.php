@@ -16,6 +16,7 @@ class Pdf extends Dompdf
         $this->loadHtml($html);
         $this->setPaper('A4', 'portrait');
         $this->render();
+        ob_end_clean();
         $this->stream($filename . ".pdf", array("Attachment" => 1));
     }
 }
